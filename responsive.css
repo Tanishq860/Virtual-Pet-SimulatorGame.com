@@ -1,0 +1,66 @@
+@media screen and (max-width: 1000px) {
+  
+  /* *{
+    margin: 0;
+    padding: 0;
+  } */
+  body {
+    overflow: auto;
+  }
+  .container {
+    width: 80%;
+    height: auto;
+  }
+  #petImage {
+    width: 170px;
+    height: 130px;
+    /* position: relative;
+    left: 35px; */
+  }
+  .progress-container {
+    width: 50%;
+  }
+  #feed {
+    margin: 10px;
+    position: relative;
+    left: 150px;
+    bottom: 200px;
+  } #play {
+    margin: 10px;
+    position: relative;
+    left: 66px;
+    bottom: 132px;
+  } #sleep {
+    margin: 10px;
+    position: relative;
+    right: 17px;
+    bottom: 60px;
+  }  
+  #wakeUp{
+    position: relative;
+    bottom: 50px;
+    width: 140px;
+  }
+  .attributes{
+    position: relative;
+    top: 50px;
+    right: 20px;
+  }
+  .attributes p{
+    position: relative;
+    right: 55px;
+  }
+  
+  .petbtn{
+    position: relative;
+   top: 50px; 
+  }
+  button{
+    width: 60px;
+    height: 35px;  }
+}
+.petSelection{
+  position: relative;
+  bottom: 30px;
+}
+
