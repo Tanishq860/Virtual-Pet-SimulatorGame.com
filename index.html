@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Virtual Prt Simulator</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="responsive.css" />
+    <link rel="stylesheet" href="animation.css" />
+  </head>
+
+  <body>
+    <section>
+      <h1>Virtual Pet Simulator Game</h1>
+      <p>Choose your favourite pet and take care of him like your own pet!</p>
+    </section>
+    <div class="container">
+      <div class="image-container">
+        <div class="happy">
+          <img
+            id="petImage"
+            src="https://png.pngtree.com/png-clipart/20230405/original/pngtree-cartoon-dog-sticker-cute-puppy-png-image_9029358.png"
+            alt="Virtual Pet Image"
+          />
+        </div>
+        <div class="sad">
+          <img
+            class="sadImg"
+            id="petImage1"
+            src="https://png.pngtree.com/png-clipart/20230405/original/pngtree-cartoon-puppy-dog-cute-sticker-png-image_9029366.png"
+            alt="Sad Pet Image"
+            width="130px"
+            height="100px"
+          />
+        </div>
+        <div class="sleeping">
+          <img
+            class="sleepimg"
+            id="petImage2"
+            src="https://www.pngkey.com/png/full/279-2790561_dalmatian-clipart-dalmatian-puppy-sleeping-dog-clipart-black.png"
+            alt="Sleeping Pet Image"
+            width="17vw"
+            height="38vh"
+          />
+        </div>
+      </div>
+
+      <div class="attributes">
+        <p>Hunger</p>
+        <div class="progress-container">
+          <div class="hunger-bar" id="hunger">50%</div>
+        </div>
+        <p>Happiness</p>
+        <div class="progress-container">
+          <div class="happiness-bar" id="happiness">50%</div>
+        </div>
+        <p>Energy</p>
+        <div class="progress-container">
+          <div class="energy-bar" id="energy">50%</div>
+        </div>
+      </div>
+      <div class="petbtn">
+        <button id="feed" onclick="feedPet()">Feed</button>
+        <button id="play" onclick="playWithPet()">Play</button>
+        <button id="sleep" onclick="putPetToSleep()">Sleep</button>
+        <button id="wakeUp" onclick="wakeUppet()">Wake Up</button>
+      </div>
+      <div class="petSelection">
+        <label for="petType">Choose a pet :</label>
+        <select name="petType" id="petType" onchange="changePetType()">
+          <option value="dog">Dog</option>
+          <option value="cat">Cat</option>
+          <option value="bird">Bird</option>
+        </select>
+      </div>
+      <div class="achievements">
+        <h3>Achievements</h3>
+        <ul id="achievementsList"></ul>
+      </div>
+      <div class="note">
+      <p>Note : Sometimes it takes time to update your pet's happy mood.</p> 
+    </div>
+    </div>
+    <div class="instructions">
+      <h3>Game Instructions</h3>
+      <div class="info1">
+        <p>1. Choose Your Pet:</p>
+        <ul>
+          <li>
+            Select your favorite pet from the dropdown menu at the bottom of the
+            screen. You can choose between a Dog, Cat, or Bird.
+          </li>
+        </ul>
+      </div>
+      <div class="info2">
+        <p>2. Pet Attributes:</p>
+        <ul>
+          <li>Your pet has three key attributes that you need to manage:</li>
+          <li>
+            Hunger: Indicates how hungry your pet is. Keep it low by feeding
+            your pet!
+          </li>
+          <li>
+            Happiness: Shows how happy your pet is. Keep it high by playing with
+            your pet!
+          </li>
+          <li>
+            Energy: Represents how tired your pet is. Keep it high by letting
+            your pet sleep!
+          </li>
+        </ul>
+      </div>
+      <div class="info3">
+        <p>3. Buttons to Interact with Your Pet:</p>
+        <ul>
+          <li>
+            Feed: Click to feed your pet and reduce its hunger while boosting
+            energy.
+          </li>
+          <li>
+            Play: Play with your pet to increase happiness and slightly increase
+            hunger and energy.
+          </li>
+          <li>
+            Sleep: Put your pet to sleep to restore energy but reduce happiness
+            over time.
+          </li>
+          <li>
+            Wake Up: Wake your pet up from sleep and resume other activities.
+          </li>
+        </ul>
+      </div>
+      <div class="info4">
+        <p>4. Pet Behavior:</p>
+        <ul>
+          <li>
+            If your pet is hungry, it will show signs of sadness. Feed it to
+            make it happy again.
+          </li>
+          <li>
+            If your pet is asleep, you can not interact with it until it wakes
+            up.
+          </li>
+          <li>
+            Your pet’s appearance will change based on its current state (happy,
+            sad, or sleeping).
+          </li>
+        </ul>
+      </div>
+      <div class="info5">
+        <p>5. Achievements:</p>
+        <ul>
+          <li>
+            You will earn Achievements based on your actions in the game, such
+            as feeding your pet for the first time or keeping your pet happy for
+            a certain period.
+          </li>
+          <li>Check the Achievements section to see your progress.</li>
+        </ul>
+      </div>
+      <div class="info6">
+        <p>6. How to Win:</p>
+        <ul>
+          <li>
+            Keep your pet happy, healthy, and energized by managing its needs.
+          </li>
+          <li>
+            Complete achievements to unlock special milestones in the game!
+          </li>
+        </ul>
+      </div>
+    </div>
+    <script>
+      let hunger = 50;
+      let energy = 50;
+      let happiness = 50;
+      let isAsleep = false;
+      let sleepInterval;
+      let currentPet = "dog";
+      let achievements = {
+        firstFeed: {
+          name: "First Feed",
+          completed: false,
+        },
+        happyPet: {
+          name: "Keep pet happy for 10 minutes.",
+          completed: false,
+        },
+        playWithPet: {
+          name: "Play with pet for 5 minutes",
+          completed: false,
+        },
+      };
+      let feedCount = 0;
+      let playCount = 0;
+      let happinessTimer = 0;
+      let petIsSad = false;
+
+      const pets = {
+        dog: {
+          image:
+            "https://png.pngtree.com/png-clipart/20230405/original/pngtree-cartoon-dog-sticker-cute-puppy-png-image_9029358.png",
+          energyRate: 10,
+          happinessRate: 5,
+          asleepImage:
+            "https://www.pngkey.com/png/full/279-2790561_dalmatian-clipart-dalmatian-puppy-sleeping-dog-clipart-black.png",
+          sadPic:
+            "https://png.pngtree.com/png-clipart/20230405/original/pngtree-cartoon-puppy-dog-cute-sticker-png-image_9029366.png",
+        },
+        cat: {
+          image:
+            "https://pngimg.com/uploads/tom_and_jerry/tom_and_jerry_PNG26.png",
+          energyRate: 8,
+          happinessRate: 10,
+          asleepImage:
+            "https://i.pinimg.com/originals/61/46/d5/6146d5e4f8be6747fdb1011106fc098b.png",
+          sadPic:
+            "https://i.pinimg.com/originals/86/85/8c/86858c1d216ed3e4adbb386e625d8b04.png",
+        },
+        bird: {
+          image:
+            "https://www.freeiconspng.com/thumbs/angry-birds-png/angry-birds-picture-download-23.png",
+          energyRate: 12,
+          happinessRate: 3,
+          asleepImage:
+            "https://tse3.mm.bing.net/th?id=OIP.VUW9i-vlibmJIbDFolXrvQHaFY&pid=Api&P=0&h=220",
+          sadPic:
+            "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/i/57f7600a-30c5-4b3f-8433-33b0a0cb6607/dav0463-0dfe96c0-eebb-47db-b9ef-29fbcc5a363d.png/v1/fill/w_408,h_408,strp/angry_birds_stickers__hatchling_sad_by_alexjokelfin_dav0463-fullview.png",
+        },
+      };
+
+      function updateAttributes() {
+        document.getElementById("hunger").style.width = hunger + "%";
+        document.getElementById("hunger").innerText = hunger + "%";
+
+        document.getElementById("energy").style.width = energy + "%";
+        document.getElementById("energy").innerText = energy + "%";
+
+        document.getElementById("happiness").style.width = happiness + "%";
+        document.getElementById("happiness").innerText = happiness + "%";
+      }
+
+      function feedPet() {
+        if (isAsleep) {
+          alert("The pet is asleep. Wake him up to feed.");
+          return;
+        }
+        hunger = Math.max(0, hunger - 10);
+        energy = Math.min(100, energy + 5);
+        feedCount++;
+        updateAttributes();
+      }
+
+      function playWithPet() {
+        if (isAsleep) {
+          alert("The pet is asleep. Wake him up to play.");
+          return;
+        }
+
+        happiness = Math.min(100, happiness + 10);
+        energy = Math.max(0, energy - 10);
+        hunger = Math.min(100, hunger + 5);
+        playCount++;
+        updateAttributes();
+      }
+
+      function putPetToSleep() {
+        if (isAsleep) {
+          alert("The pet is already asleep.");
+          return;
+        }
+        isAsleep = true;
+        document.getElementById("petImage").style.display = "none";
+        document.getElementById("petImage1").style.display = "none";
+        document.getElementById("petImage2").style.display = "block";
+
+        sleepInterval = setInterval(() => {
+          if (isAsleep) {
+            energy = Math.min(100, energy + 15);
+            happiness = Math.max(0, happiness - 5);
+            updateAttributes();
+          }
+        }, 5000);
+      }
+
+      function wakeUppet() {
+        if (!isAsleep) return;
+        isAsleep = false;
+        clearInterval(sleepInterval);
+        document.getElementById("petImage").style.display = "block";
+        document.getElementById("petImage1").style.display = "none";
+        document.getElementById("petImage2").style.display = "none";
+        alert("The pet has woken up!");
+        updateAttributes();
+      }
+
+      function changePetType() {
+        currentPet = document.getElementById("petType").value;
+        updatePetAppearance();
+      }
+
+      function updatePetAppearance() {
+        const pet = pets[currentPet];
+
+        const petImage = document.getElementById("petImage");
+        const petImage1 = document.getElementById("petImage1");
+        const petImage2 = document.getElementById("petImage2");
+
+        petImage.style.display = "none";
+        petImage1.style.display = "none";
+        petImage2.style.display = "none";
+
+        // If the pet is asleep it'll show the sleeping image
+        if (isAsleep) {
+          petImage2.style.display = "block";
+        }
+        // If the pet is sad it'll show the sad image
+        else if (hunger > 50) {
+          petImage1.style.display = "block";
+        }
+        // If the pet is happy it'll show the normal happy image
+        else {
+          petImage.style.display = "block";
+        }
+
+        petImage.src = pet.image;
+        petImage2.src = pet.asleepImage;
+        petImage1.src = pet.sadPic;
+      }
+
+      function checkAchievement() {
+        if (feedCount >= 1 && !achievements.firstFeed.completed) {
+          achievements.firstFeed.completed = true;
+          addachievement(achievements.firstFeed.name);
+        }
+        if (happiness >= 70 && happinessTimer < 600000) {
+          happinessTimer += 5000;
+        } else if (
+          happinessTimer >= 600000 &&
+          !achievements.happyPet.completed
+        ) {
+          achievements.happyPet.completed = true;
+          addAchievement(achievements.happyPet.name);
+        }
+        if (playCount >= 5 && !achievements.playWithPet.completed) {
+          achievements.playWithPet.completed = true;
+          addAchievement(achievements.playWithPet.name);
+        }
+      }
+
+      function addAchievement(achievementName) {
+        const listItem = document.createElement("li");
+        lisItem.innerText = achievementName;
+        document.getElementById("achievementList").appendChild(listItem);
+      }
+
+      setInterval(() => {
+        if (!isAsleep) {
+          hunger = Math.min(100, hunger + 2);
+          happiness = Math.max(0, happiness - 2);
+          energy = Math.max(0, energy - 2);
+        }
+
+        if (hunger > 65 && !petIsSad) {
+          alert(
+            "Your pet is sad, feed or play with your pet to make them happy!"
+          );
+          return;
+          petIsSad = true;
+        }
+
+        if (hunger <= 65 && !petIsSad) {
+          petIsSad = false;
+        }
+        updateAttributes();
+        updatePetAppearance();
+      }, 5000);
+
+      updateAttributes();
+    </script>
+  </body>
+</html>

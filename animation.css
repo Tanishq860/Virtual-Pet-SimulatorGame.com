@@ -1,0 +1,85 @@
+.image-container {
+  display: flex;
+  flex-direction: row;
+  /* overflow: hidden; */
+  justify-content: center;
+  align-items: center;
+}
+.petSelection {
+  margin-top: 20px;
+  text-align: center;
+}
+.petSelection label {
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+#petType {
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+}
+.achievements {
+  margin: 20px;
+  text-align: center;
+}
+.achievements h3{
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+#achievementsList{
+    list-style: none;
+    padding: 0;
+}
+#achievementsList li{
+    background-color: #f0f0f0;
+    margin: 5px 0;
+    padding: 8px;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: left;
+    border: 1px solid #ccc;
+}
+#achivementsList li:before{
+    content: "🎉 ";
+}
+.sad {
+  animation: sadAnimation 1s infinite alternate;
+  /* filter: grayscale(100%); */
+  /* display: none; */
+}
+.happy {
+  /* display: block; */
+  animation: happyAnimation 1s infinite alternate;
+  filter: none;
+}
+.sleeping {
+  animation: sleepingAnimation 1s infinite alternate;
+  filter: none;
+}
+@keyframes sadAnimation {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0.95);
+  }
+}
+@keyframes happyAnimation {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0.95);
+  }
+}
+@keyframes sleepingAnimation {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0.95);
+  }
+}
